@@ -15,23 +15,24 @@ generator = cms.EDFilter("Pythia8GeneratorFilter",
 		EvtGen130 = cms.untracked.PSet(
 			decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2010.DEC'),
 			particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt.pdl'),
-			user_decay_file = cms.vstring('GeneratorInterface/ExternalDecays/data/Bd_JpsiKs_mumu.dec'),
-			list_forced_decays = cms.vstring('MyB0','Myanti-B0'),
+			user_decay_file = cms.vstring('GeneratorInterface/ExternalDecays/data/Bu_JpsiK.dec'),
+			list_forced_decays = cms.vstring('MyB+',
+											 'MyB-'),
 			operates_on_particles = cms.vint32()
 		),
 		parameterSets = cms.vstring('EvtGen130')
 	),
 	PythiaParameters = cms.PSet(
 		pythia8CommonSettingsBlock,
-        pythia8CP5SettingsBlock,
-        # pythia8PSweightsSettingsBlock,
-        processParameters = cms.vstring(            
-	    'HardQCD:all = on',
-	    'PhaseSpace:pTHatMin = 5.',					 
-	    'PhaseSpace:bias2Selection = on',
+                pythia8CP5SettingsBlock,
+                processParameters = cms.vstring(            
+			'HardQCD:all = on',
+			'PhaseSpace:pTHatMin = 5.',					 
+			'PhaseSpace:bias2Selection = on',
             'PhaseSpace:bias2SelectionPow = 5.',
             'PhaseSpace:bias2SelectionRef = 1'
-	    ),
+            ),
+        # pythia8PSweightsSettingsBlock,
 		parameterSets = cms.vstring(
 			'pythia8CommonSettings',
 			'pythia8CP5Settings',
@@ -60,11 +61,11 @@ mumugenfilter = cms.EDFilter("MCParticlePairFilter",
 )
 
 BJpsiDaufilter = cms.EDFilter("PythiaMomDauFilter",
-							  ParticleID = cms.untracked.int32(511),
+							  ParticleID = cms.untracked.int32(521),
 							  MomMinPt = cms.untracked.double(2.0),#5.0
 							  MomMinEta = cms.untracked.double(-2.5),
 							  MomMaxEta = cms.untracked.double(2.5),
-							  DaughterIDs = cms.untracked.vint32(443, 310),
+							  DaughterIDs = cms.untracked.vint32(443, 321),
 							  NumberDaughters = cms.untracked.int32(2),
 							  DaughterID = cms.untracked.int32(443),
 							  DescendantsIDs = cms.untracked.vint32(13, -13),
@@ -72,6 +73,5 @@ BJpsiDaufilter = cms.EDFilter("PythiaMomDauFilter",
 							  MinEta = cms.untracked.double(-10000.0),#-2.5
 							  MaxEta = cms.untracked.double(10000.0),#2.5
 )
-
 
 ProductionFilterSequence = cms.Sequence(generator*mumugenfilter*BJpsiDaufilter)
