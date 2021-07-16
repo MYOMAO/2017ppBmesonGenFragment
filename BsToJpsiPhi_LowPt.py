@@ -8,16 +8,14 @@ from GeneratorInterface.EvtGenInterface.EvtGenSetting_cff import *
 
 generator = cms.EDFilter("Pythia8GeneratorFilter",
 	comEnergy = cms.double(5020.0),
-	crossSection = cms.untracked.double(54000000000),
-	filterEfficiency = cms.untracked.double(3.0e-4),
 	pythiaHepMCVerbosity = cms.untracked.bool(False),
 	maxEventsToPrint = cms.untracked.int32(0),
 	pythiaPylistVerbosity = cms.untracked.int32(0),
 	ExternalDecays = cms.PSet(
 		EvtGen130 = cms.untracked.PSet(
-			decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2010.DEC'), # diff w/o NOLONGLIFE
-			# particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt.pdl'),
-			particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt.pdl'), # after (including) CMSSW_9_4_12
+			decay_table = cms.string('GeneratorInterface/EvtGenInterface/data/DECAY_2014_NOLONGLIFE.DEC'),
+            particle_property_file = cms.FileInPath('GeneratorInterface/EvtGenInterface/data/evt_2014.pdl'),
+            convertPythiaCodes = cms.untracked.bool(False),
 			# user_decay_file = cms.vstring('GeneratorInterface/ExternalDecays/data/Bs_JpsiPhi_V3.dec'),
 			list_forced_decays = cms.vstring('MyB_s0','Myanti-B_s0'),
 			user_decay_embedded = cms.vstring(
@@ -66,7 +64,8 @@ End
 		pythia8CP5SettingsBlock,
         # pythia8PSweightsSettingsBlock,
         		processParameters = cms.vstring(            
-			'HardQCD:all = on'
+			'HardQCD:all = on',
+            'PhaseSpace:pTHatMin = 0'
 		),
         parameterSets = cms.vstring(
 			'pythia8CommonSettings',
